@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem("token")) {
+                window.location.href = "/login-page"; // Redirect to login if not authenticated
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "/login-page";
+        }
+    </script>
+</head>
+<style>
+    body {
+            background-image: url("{{ url_for('static', filename='dash.jpg') }}");
+            background-size: cover; /* Ensures image covers the entire screen */
+            background-position: center; /* Centers the image */ 
+            background-repeat: no-repeat; /* Prevents repeating */ 
+            background-attachment: fixed; /* Keeps image fixed while scrolling */
+        }
+</style>
+<body class="bg-light">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MoodSync Dashboard</a>
+            <div class="d-flex">
+                <a href="/profile" class="btn btn-light">User Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container text-center mt-5">
+        <h2>Welcome to MoodSync</h2>
+        <!-- Button to trigger modal -->
+        <button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#navModal">
+            Open Navigation
+        </button>
+    </div>
+
+    <!-- Modal for Navigation Links -->
+    <div class="modal fade" id="navModal" tabindex="-1" aria-labelledby="navModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="navModalLabel">Navigation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <a href="/mood-selection" class="btn btn-outline-primary w-100 mb-2">Select Mood</a>
+                    <a href="/chatbot" class="btn btn-outline-primary w-100 mb-2">Hey! I'm All Ears</a>
+                    <a href="#" onclick="logout()" class="btn btn-outline-danger w-100">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

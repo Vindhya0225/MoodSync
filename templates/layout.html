@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MoodSync{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (!localStorage.getItem("token") && !window.location.pathname.includes("login") && !window.location.pathname.includes("register")) {
+                window.location.href = "/login-page"; // Redirect to login if not authenticated
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = "/login-page";
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Layout Panel -->
+    <header class="header">
+        <div class="left">
+            {% if request.path in ['/dashboard', '/mood-selection', '/chatbot'] %}
+                Music Application
+            {% endif %}
+        </div>
+        <div class="right">
+            {% if request.path in ['/dashboard', '/mood-selection', '/chatbot'] %}
+                <a href="/profile">Profile</a>
+            {% elif request.path == '/profile' %}
+                <a href="#" onclick="logout()">Logout</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

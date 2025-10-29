@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <nav class="navbar navbar-dark bg-primary fixed-top py-2">
+        <div class="container-fluid d-flex justify-content-between">
+            <a class="navbar-brand text-white fs-4">Music Application</a>
+            <a href="/login" class="btn btn-light">Logout</a>
+        </div>
+    </nav>
+    
+    <style>
+        body {
+            padding-top: 55px; /* Adjust based on new navbar height */
+            background-image: url("{{ url_for('static', filename='profile.jpg') }}");
+            background-size: cover; /* Ensures image covers the entire screen */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents repeating */
+            background-attachment: fixed; /* Keeps image fixed while scrolling */
+        }
+        .playlist-container {
+            display: flex;
+            overflow-x: auto; /* Enables horizontal scrolling */
+            gap: 10px;
+            padding: 10px;
+            white-space: nowrap;
+            background-color: #121212; /* Dark background */
+            border-radius: 12px;
+            max-width: 90%;
+            margin: auto;
+        }
+
+        .song {
+            flex: 0 0 auto; /* Prevents shrinking */
+            width: 300px;
+            height: 352px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="container text-center mt-4">
+<h1>User Profile</h1>
+
+{% if not profile %}
+    <h2>Create Profile</h2>
+    <form action="{{ url_for('create_profile') }}" method="POST">
+        <label>Name:</label> <input type="text" name="name" required><br>
+        <label>Age:</label> <input type="number" name="age" required><br>
+        <label>Bio:</label> <textarea name="bio"></textarea><br>
+        <button type="submit">Create Profile</button>
+    </form>
+{% else %}
+    <h2>Profile Details</h2>
+    <p><strong>Name:</strong> {{ profile.name }}</p>
+    <p><strong>Age:</strong> {{ profile.age }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio }}</p>
+
+    <h2>Edit Profile</h2>
+    <form action="{{ url_for('edit_profile') }}" method="POST">
+        <label>Name:</label> <input type="text" name="name" value="{{ profile.name }}" required><br>
+        <label>Age:</label> <input type="number" name="age" value="{{ profile.age }}" required><br>
+        <label>Bio:</label> <textarea name="bio">{{ profile.bio }}</textarea><br>
+        <button type="submit">Save Changes</button>
+    </form>
+{% endif %}
+
+<h2>Listening Reports</h2>
+{% for report in reports %}
+    <p><strong>Login Time:</strong> {{ report.login_time }}</p>
+    <p><strong>Playlist:</strong> {{ report.playlist }}</p>
+    <p><strong>Duration:</strong> {{ report.duration }}</p>
+    <p><strong>Feedback:</strong> {{ report.feedback }}</p>
+    <hr>
+{% endfor %}
+</div>
+<h2>Create Playlist</h2>
+<a href="{{ url_for('spotify_redirect') }}"><button>Go to Spotify</button></a>
+<button onclick="openDialog()">Add Song</button>
+
+<div id="songDialog" style="display:none;">
+    <form action="{{ url_for('add_song') }}" method="POST">
+        <label>Spotify URL:</label> <input type="text" name="song_url" required>
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+<h2>Your Playlist</h2>
+{% if playlist %}
+    <div class="playlist-container">
+        {% for song in playlist %}
+            <iframe class="song"
+                src="{{ song.song_url }}?utm_source=generator"
+                frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                loading="lazy">
+            </iframe>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No songs added yet.</p>
+{% endif %}
+
+<script>
+    function openDialog() {
+        document.getElementById('songDialog').style.display = 'block';
+    }
+
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function() {
+            console.log("Form submitted!");
+        });
+    });
+</script>
+
+</body>
+</html>

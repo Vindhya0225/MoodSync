@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Embed</title>
+</head>
+<body>
+    <h2>Spotify Tracks</h2>
+    <div id="spotify-container">
+        {% for url in spotify_iframes %}
+        <iframe style="border-radius:12px" src="{{ url }}?utm_source=generator" 
+                width="100%" height="352" frameBorder="0" allowfullscreen=""
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+        {% endfor %}
+    </div>
+
+    <h3>Add a new Spotify track:</h3>
+    <input type="text" id="spotify-url" placeholder="Paste Spotify embed URL">
+    <button onclick="addSpotifyUrl()">Add</button>
+
+    <script>
+        function addSpotifyUrl() {
+            let url = document.getElementById("spotify-url").value;
+            fetch('/add_url', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    let container = document.getElementById("spotify-container");
+                    let iframe = document.createElement("iframe");
+                    iframe.style.borderRadius = "12px";
+                    iframe.src = url + "?utm_source=generator";
+                    iframe.width = "100%";
+                    iframe.height = "352";
+                    iframe.frameBorder = "0";
+                    iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+                    iframe.loading = "lazy";
+                    container.appendChild(iframe);
+                } else {
+                    alert("Invalid URL");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
