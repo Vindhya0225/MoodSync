@@ -1,8 +1,8 @@
 import requests
 import base64
 
-CLIENT_ID = "94c6dc0aceab4636ba7106aaad00a863"  # Replace with your actual Client ID
-CLIENT_SECRET = "f900f6261eac4bb4a7215fed828626ab"  # Replace with your actual Client Secret
+CLIENT_ID = "# Replace with your actual Client ID"  # Get both from spotify developer dashboard by creatong a new project
+CLIENT_SECRET = "Replace with your actual Client Secret"  
 
 def get_spotify_token():
     url = "https://accounts.spotify.com/api/token"
@@ -17,3 +17,4 @@ def get_spotify_token():
 # Get the token
 spotify_token = get_spotify_token()
 print("Spotify Token:", spotify_token)
+
