@@ -20,7 +20,7 @@ from flask_session import Session
 app = Flask(__name__)
 CORS(app) 
 
-genai.configure(api_key="AIzaSyBqY3p2gBNGUaHmiFjBs0NL-zzpxbT9TGc")
+genai.configure(api_key="Your_API_Key")
 # Load Gemini Model
 geminiModel = genai.GenerativeModel("gemini-1.5-pro-latest")
 chat = geminiModel.start_chat(history=[])
@@ -493,3 +493,4 @@ def submit_feedback():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
