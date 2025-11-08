@@ -43,10 +43,11 @@ with app.app_context():
 
 app.register_blueprint(routes)
 
-CLIENT_ID = "94c6dc0aceab4636ba7106aaad00a863"
-CLIENT_SECRET = "f900f6261eac4bb4a7215fed828626ab"
+#Replace with your Spotify keys
+CLIENT_ID = "CLIENT_ID"
+CLIENT_SECRET = "CLIENT_SECRET"
 
-app.secret_key = "2832a84926bd5f0cc001914f59767f0362f6226a3fdc6f43e137d95bbc7c2976"
+app.secret_key = "app.secret_key"
 
 @app.route('/')
 def home():
@@ -493,4 +494,5 @@ def submit_feedback():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
